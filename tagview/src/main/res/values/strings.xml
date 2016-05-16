@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TagView</string>
+    <string name="search_hint">Search Termo</string>
+</resources>

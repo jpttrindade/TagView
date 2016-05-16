@@ -1,0 +1,5 @@
+include ':tagview'
+
+rootProject.name = 'com.jpttrindade'
+rootProject.children.each { it.name = 'TagView' }
+
