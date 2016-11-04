@@ -12,7 +12,7 @@ def getArtefactName()
 }
 
 
-group = getArtefactName()
+group = 'br.com.jpttrindade'
 version = getVersionName()
 
 
