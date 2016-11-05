@@ -1,5 +1,5 @@
-include ':tagview'
+include ':lib'
 
-rootProject.name = 'com.jpttrindade'
-rootProject.children.each { it.name = 'TagView' }
+rootProject.name = 'TagView'
+rootProject.children.each { it.name = 'lib' }
 
