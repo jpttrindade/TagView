@@ -1,4 +1,4 @@
-package jpttrindade.widget.tagview;
+package br.com.jpttrindade.tagview;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

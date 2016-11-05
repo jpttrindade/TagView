@@ -1,4 +1,4 @@
-package jpttrindade.widget.tagview;
+package br.com.jpttrindade.tagview.widget;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,8 @@
-package jpttrindade.widget.tagview;
+package br.com.jpttrindade.tagview.widget;
 
 import java.util.ArrayList;
 
-import jpttrindade.widget.tagview.TagView.OnTagClickListener;
+import br.com.jpttrindade.tagview.widget.TagView.OnTagClickListener;
 import jpttrindade.widget.tagview.R;
 import android.content.Context;
 import android.content.res.TypedArray;

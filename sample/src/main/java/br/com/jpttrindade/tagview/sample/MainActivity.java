@@ -1,16 +1,14 @@
 package br.com.jpttrindade.tagview.sample;
 
 import android.graphics.Color;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import jpttrindade.widget.tagview.Tag;
-import jpttrindade.widget.tagview.TagView;
+import br.com.jpttrindade.tagview.widget.Tag;
+import br.com.jpttrindade.tagview.widget.TagView;
 
 public class MainActivity extends AppCompatActivity {
 
