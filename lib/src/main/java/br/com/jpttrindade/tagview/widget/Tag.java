@@ -77,4 +77,13 @@ public class Tag implements Parcelable {
 			return new Tag[size];
 		}
 	};
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Tag) {
+			Tag tag = (Tag) obj;
+			return tag.equals(this);
+		}
+		return super.equals(obj);
+	}
 }

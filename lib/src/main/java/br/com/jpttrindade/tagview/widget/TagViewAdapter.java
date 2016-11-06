@@ -1,9 +1,5 @@
 package br.com.jpttrindade.tagview.widget;
 
-import java.util.ArrayList;
-
-import br.com.jpttrindade.tagview.widget.TagView.OnTagClickListener;
-import jpttrindade.widget.tagview.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -12,15 +8,19 @@ import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.ViewHolder> implements View.OnClickListener{
+import java.util.ArrayList;
+
+import br.com.jpttrindade.tagview.R;
+
+public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemViewHolder> implements View.OnClickListener{
 
 	private ArrayList<Tag> mDataset;
 
@@ -89,10 +89,10 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.ViewHold
 
 		try {
 			mCardViewHeight = (int) typedArray.getDimension(R.styleable.TagView_tag_height,
-					(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, mDisplayMetrics));
+					TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,25, mDisplayMetrics));
 			
 			mCardViewCornerRadius = typedArray.getDimension(R.styleable.TagView_tag_cornerRadius,
-					(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, mDisplayMetrics));
+					(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, mDisplayMetrics));
 			
 			
 			mCardViewMargins = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2.5f, mDisplayMetrics);
@@ -129,7 +129,7 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.ViewHold
 			
 			
 			mTextViewTextSize = typedArray.getDimensionPixelSize(R.styleable.TagView_tag_textSize,
-					(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 18, mDisplayMetrics));
+					(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,10, mDisplayMetrics));
 			
 			mTextViewTextSizeTypedValue = TypedValue.COMPLEX_UNIT_PX;
 
@@ -158,94 +158,93 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.ViewHold
 	}
 
 	@Override
-	public void onBindViewHolder(ViewHolder holder, int position) {
+	public void onBindViewHolder(TagItemViewHolder holder, int position) {
 		Tag tag = mDataset.get(position); 
 		holder.mTextView.setText(tag.text);
-		//holder.mTextView.setBackgroundColor(tag.color);
 		holder.mTextView.setTag(tag);
 		holder.mImageButton.setTag(tag);
-		//holder.mImageButton.setBackgroundColor(Color.GREEN);
 		holder.container.setTag(tag);
-		((CardView)holder.container).setCardBackgroundColor(tag.color);
+		holder.container.setCardBackgroundColor(tag.color);
 		holder.mTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, tag.imgID, 0);
 
 	}
 
 	@Override
-	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	public TagItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-		CardView view = new CardView(mContext);
-		view.setId(R.id.card_view);
-			
-		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,mCardViewHeight);
-		layoutParams.setMargins(mCardViewMargins, 0, mCardViewMargins, 0);
-		layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
-		view.setLayoutParams(layoutParams);
-		view.setRadius(mCardViewCornerRadius);
-		
-		view.setPreventCornerOverlap(false);
-				
-		RelativeLayout rl1 = new RelativeLayout(view.getContext());
-		rl1.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.MATCH_PARENT));
+		LayoutInflater inflater = LayoutInflater.from(mContext);
+		View root = inflater.inflate(R.layout.tagview_item, parent, false);
+//
+//		RelativeLayout rl1 = new RelativeLayout(cardView.getContext());
+//		rl1.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.MATCH_PARENT));
+//		TextView tv_tag = (TextView) root.findViewById(R.id.tv_tag);
+//		tv_tag.setPadding(mTextViewLeftPadding,mTextViewTopPadding,mTextViewRightPadding,mTextViewBottomPadding);
+//		tv_tag.setGravity(Gravity.CENTER);
+//		tv_tag.setTextColor(mTextViewTextColor);
+//		tv_tag.setTextSize(mTextViewTextSizeTypedValue, mTextViewTextSize);
+//		tv_tag.setCompoundDrawablePadding(mTextViewDrawablePadding);
+//
+//		RelativeLayout.LayoutParams layoutParams2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.MATCH_PARENT);
+//		layoutParams2.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+//		layoutParams2.addRule(RelativeLayout.CENTER_VERTICAL);
+//		tv_tag.setLayoutParams(layoutParams2);
+//
+//		View divider = root.findViewById(R.id.divider_tag);
+//		RelativeLayout.LayoutParams layoutParams3 = new RelativeLayout.LayoutParams(mDividerWidth, RelativeLayout.LayoutParams.MATCH_PARENT);
+//		layoutParams3.addRule(RelativeLayout.RIGHT_OF, R.id.tv_tag);
+//		divider.setLayoutParams(layoutParams3);
+//		divider.setBackgroundColor(mDividerColor);
+//		divider.setAlpha(Color.alpha(mDividerColor));
+//		layoutParams3.setMargins(mDividerLeftMargin, mDividerTopMargin, mDividerRightMargin, mDividerBottomMargin);
+//
+//
+//		ImageView ib_excluir = (ImageView) root.findViewById(R.id.iv_excluir_tag);
+//
+//		RelativeLayout.LayoutParams layoutParams4 = new RelativeLayout.LayoutParams(mImageSize, mImageSize);
+//		layoutParams4.addRule(RelativeLayout.RIGHT_OF, R.id.divider_tag);
+//		layoutParams4.addRule(RelativeLayout.CENTER_VERTICAL);
+//		layoutParams4.setMargins(mImageLeftMargin, mImageTopMargin, mImageRightMargin, mImageBottomMargin);
+//		ib_excluir.setLayoutParams(layoutParams4);
+//		ib_excluir.setImageResource(mImageId);
+//		ib_excluir.setPadding(mImageLeftPadding,mImageTopPadding, mImageRightPadding, mImageBottomPadding);
+//		ib_excluir.setScaleType(ScaleType.FIT_CENTER);
 
-		TextView tv_tag = new TextView(rl1.getContext());
-		tv_tag.setId(R.id.tv_tag);
-		tv_tag.setPadding(mTextViewLeftPadding,mTextViewTopPadding,mTextViewRightPadding,mTextViewBottomPadding);
-		tv_tag.setGravity(Gravity.CENTER);
-		tv_tag.setTextColor(mTextViewTextColor);
-		tv_tag.setTextSize(mTextViewTextSizeTypedValue, mTextViewTextSize);
-		tv_tag.setCompoundDrawablePadding(mTextViewDrawablePadding);
-	
-		RelativeLayout.LayoutParams layoutParams2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.MATCH_PARENT);
-		layoutParams2.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		layoutParams2.addRule(RelativeLayout.CENTER_VERTICAL);
-		tv_tag.setLayoutParams(layoutParams2);
-
-		View divider = new View(view.getContext());
-		divider.setId(R.id.divider_tag);
-		RelativeLayout.LayoutParams layoutParams3 = new RelativeLayout.LayoutParams(mDividerWidth, RelativeLayout.LayoutParams.MATCH_PARENT);
-		layoutParams3.addRule(RelativeLayout.RIGHT_OF, R.id.tv_tag);
-		divider.setLayoutParams(layoutParams3);
-		divider.setBackgroundColor(mDividerColor);
-		divider.setAlpha(Color.alpha(mDividerColor));
-		layoutParams3.setMargins(mDividerLeftMargin, mDividerTopMargin, mDividerRightMargin, mDividerBottomMargin);
 
 
-		ImageView ib_excluir = new ImageView(view.getContext());
-		ib_excluir.setId(R.id.excluir_tag);
-
-		RelativeLayout.LayoutParams layoutParams4 = new RelativeLayout.LayoutParams(mImageSize, mImageSize);
-		layoutParams4.addRule(RelativeLayout.RIGHT_OF, R.id.divider_tag);
-		layoutParams4.addRule(RelativeLayout.CENTER_VERTICAL);		
-		layoutParams4.setMargins(mImageLeftMargin, mImageTopMargin, mImageRightMargin, mImageBottomMargin);
-		ib_excluir.setLayoutParams(layoutParams4);		
-		ib_excluir.setImageResource(mImageId);
-		ib_excluir.setPadding(mImageLeftPadding,mImageTopPadding, mImageRightPadding, mImageBottomPadding);
-		ib_excluir.setScaleType(ScaleType.FIT_CENTER);
-
-		rl1.addView(tv_tag);
-		rl1.addView(divider);
-		rl1.addView(ib_excluir);
-
-		view.addView(rl1);
-
-		ViewHolder vh = new ViewHolder(view);
+		TagItemViewHolder vh = new TagItemViewHolder(root);
 
 		return vh;
 	}
 
-	public class ViewHolder extends RecyclerView.ViewHolder {
+	public class TagItemViewHolder extends RecyclerView.ViewHolder {
 		public TextView mTextView;
 		public ImageView mImageButton;
 		public int position;
-		public View container;
+		public CardView container;
 
-		public ViewHolder(View v) {
+		public TagItemViewHolder(View v) {
 			super(v);
-			container = v;
+
+			container =  (CardView) v.findViewById(R.id.card_view);
+
+			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,mCardViewHeight);
+			layoutParams.setMargins(mCardViewMargins, 0, mCardViewMargins, 0);
+			container.setLayoutParams(layoutParams);
+			container.setRadius(mCardViewCornerRadius);
+			container.setPreventCornerOverlap(false);
+
+
+
 			mTextView = (TextView)v.findViewById(R.id.tv_tag);
-			mImageButton = (ImageView) v.findViewById(R.id.excluir_tag);
-			mTextView.setOnClickListener(TagViewAdapter.this);
+
+			mTextView.setPadding(mTextViewLeftPadding,mTextViewTopPadding,mTextViewRightPadding,mTextViewBottomPadding);
+			mTextView.setGravity(Gravity.CENTER);
+			mTextView.setTextColor(mTextViewTextColor);
+			mTextView.setTextSize(mTextViewTextSizeTypedValue, mTextViewTextSize);
+			mTextView.setCompoundDrawablePadding(mTextViewDrawablePadding);
+			mImageButton = (ImageView) v.findViewById(R.id.iv_excluir_tag);
+
+			//mTextView.setOnClickListener(TagViewAdapter.this);
 			mImageButton.setOnClickListener(TagViewAdapter.this);
 			container.setOnClickListener(TagViewAdapter.this);
 
@@ -264,12 +263,15 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.ViewHold
 		Tag tag = (Tag) v.getTag();
 		int position = getTagPosition(tag);
 
-		if(id==R.id.excluir_tag){
+		if(v instanceof ImageView){
 			mOnTagClickListener.onTagClick(tag, position, TagView.ONCLICK_REMOVE);
 		} else{
-			mOnTagClickListener.onTagClick(tag, position, TagView.ONCLICK_EDIT);
+			if (tag.editable) {
+				mOnTagClickListener.onTagClick(tag, position, TagView.ONCLICK_EDIT);
+			} else {
+				mOnTagClickListener.onTagClick(tag, position, TagView.ONCLICK_REMOVE);
+			}
 		}
-
 	}
 
 	private int getTagPosition(Tag tag) {
@@ -333,13 +335,7 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.ViewHold
 	}
 
 	public boolean contains(Tag newTag) {
-		
-		for(Tag t : mDataset){
-			if(t.equals((Tag) newTag)){
-				return true;
-			}
-		}
-		return false;
+		return mDataset.contains(newTag);
 	}
 
 	public ArrayList<Tag> getDataSet() {

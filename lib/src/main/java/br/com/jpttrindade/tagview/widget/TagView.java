@@ -2,7 +2,7 @@ package br.com.jpttrindade.tagview.widget;
 
 import java.util.ArrayList;
 
-import jpttrindade.widget.tagview.R;
+import br.com.jpttrindade.tagview.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,14 +31,6 @@ public class TagView extends RecyclerView{
 	private AttributeSet mAttributeSet;
 
 	private TypedArray typedArray;
-
-	public static interface OnTagClickListener  {
-		public void onTagClick(Tag tag, int position, int clickType);
-	}
-
-	public interface OnTagEditListener{
-		public void onTagEdit(Tag tag, int position);
-	}
 
 	public TagView(Context context) {
 		super(context);
@@ -92,13 +84,11 @@ public class TagView extends RecyclerView{
 		}));		
 	}
 
-	
-	public void setItemAnimator(ItemAnimator animator){
-		super.setItemAnimator(animator);
-	}
-	
+
 	public boolean addTag(Tag newTag){
+
 		boolean contains = mAdapter.contains(newTag);
+
 		if(!contains){
 			int total = getLayoutManager().getItemCount();
 			mAdapter.addTag(newTag);
@@ -150,40 +140,40 @@ public class TagView extends RecyclerView{
 	public void setOnTagClickListener(OnTagClickListener onTagClickListener){
 		this.mOnTagClickListener = onTagClickListener;
 
-		super.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				//Log.d("DEBUG",""+ event.getAction());
-				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN: 
-					mDownX = event.getX();
-					mDownY = event.getY();
-					isOnClick = true;
-					break;
-
-				case MotionEvent.ACTION_UP: 
-					if (isOnClick) {
-						long clickDuration = event.getEventTime() - event.getDownTime();
-						v.performClick();
-
-						if(clickDuration < CLICK_DURATION_MS) {
-							TagView.this.mOnTagClickListener.onTagClick((Tag)v.getTag(), -1, TagView.ONCLICK_DEFAULT);
-						}
-
-					}
-					break;
-
-				case MotionEvent.ACTION_MOVE:
-					if (isOnClick && (Math.abs(mDownX - event.getX()) > SCROLL_THRESHOLD  || Math.abs(mDownY - event.getY()) > SCROLL_THRESHOLD)) {
-						isOnClick = false;
-					}
-					break;
-				}
-
-				return false;
-			}
-		});
+//		super.setOnTouchListener(new OnTouchListener() {
+//
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				//Log.d("DEBUG",""+ event.getAction());
+//				switch (event.getAction()) {
+//				case MotionEvent.ACTION_DOWN:
+//					mDownX = event.getX();
+//					mDownY = event.getY();
+//					isOnClick = true;
+//					break;
+//
+//				case MotionEvent.ACTION_UP:
+//					if (isOnClick) {
+//						long clickDuration = event.getEventTime() - event.getDownTime();
+//						v.performClick();
+//
+//						if(clickDuration < CLICK_DURATION_MS) {
+//							TagView.this.mOnTagClickListener.onTagClick((Tag)v.getTag(), -1, TagView.ONCLICK_DEFAULT);
+//						}
+//
+//					}
+//					break;
+//
+//				case MotionEvent.ACTION_MOVE:
+//					if (isOnClick && (Math.abs(mDownX - event.getX()) > SCROLL_THRESHOLD  || Math.abs(mDownY - event.getY()) > SCROLL_THRESHOLD)) {
+//						isOnClick = false;
+//					}
+//					break;
+//				}
+//
+//				return false;
+//			}
+//		});
 
 		mAdapter.setOnTagClickListener(mOnTagClickListener);
 	}

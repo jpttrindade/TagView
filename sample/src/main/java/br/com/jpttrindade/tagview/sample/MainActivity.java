@@ -3,10 +3,12 @@ package br.com.jpttrindade.tagview.sample;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import br.com.jpttrindade.tagview.widget.OnTagClickListener;
 import br.com.jpttrindade.tagview.widget.Tag;
 import br.com.jpttrindade.tagview.widget.TagView;
 
@@ -31,10 +33,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        tagView.setOnTagClickListener(new TagView.OnTagClickListener() {
+        tagView.setOnTagClickListener(new OnTagClickListener() {
             @Override
             public void onTagClick(Tag tag, int position, int clickType) {
-                tagView.removeTag(tag);
+                switch (clickType) {
+                    case TagView.ONCLICK_EDIT:
+                        Log.d("DEBUG", "OnClickEdit");
+                        break;
+                    case TagView.ONCLICK_REMOVE:
+                        Log.d("DEBUG", "OnClickRemove");
+                        tagView.removeTag(tag);
+                        break;
+                    case TagView.ONCLICK_DEFAULT:
+                        Log.d("DEBUG", "OnClickDefault");
+                }
+
             }
         });
 

@@ -14,14 +14,16 @@
 <br.com.jpttrindade.tagview.widget.TagView
     android:id="@+id/tagview"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:paddingTop="15dp"
-    app:tag_height="30dp"
-    app:tag_textColor="@android:color/white"
+    android:layout_height="110dp"
+    android:paddingTop="5dp"
+    app:tag_textSize="40sp"
+    app:tag_height="80dp"
+
+
     app:tag_cornerRadius="2dp"
     app:tag_closeSrc="@drawable/ic_close_white_18dp"
     app:tag_dividerColor="@android:color/transparent"
-    app:tag_textLeftPadding="5dp" />
+    />
 
     <EditText
         android:layout_width="match_parent"
