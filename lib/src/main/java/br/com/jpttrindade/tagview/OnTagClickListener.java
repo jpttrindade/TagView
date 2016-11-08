@@ -1,4 +1,4 @@
-package br.com.jpttrindade.tagview.widget;
+package br.com.jpttrindade.tagview;
 
 /**
  * Created by JP on 05/11/2016.

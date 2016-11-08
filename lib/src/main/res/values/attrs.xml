@@ -2,6 +2,7 @@
 
     <declare-styleable name="TagView">
 
+        <attr name="tag_textBold" format="boolean"/>
         <attr name="tag_textSize" format="dimension"/>
         <attr name="tag_textColor" format="color"/>
         <attr name="tag_textPadding" format="dimension"/>
@@ -13,32 +14,8 @@
         <attr name="tag_cornerRadius" format="dimension"/>
         <attr name="tag_height" format="dimension"/>
 
-
         <attr name="tag_closeSrc" format="reference" />
-
-        <attr name="tag_closeSize" format="dimension"/>
-
-
-        <attr name="tag_closePadding" format="dimension"/>
-        <attr name="tag_closeTopPadding" format="dimension"/>
-        <attr name="tag_closeBottomPadding" format="dimension"/>
-        <attr name="tag_closeLeftPadding" format="dimension"/>
-        <attr name="tag_closeRightPadding" format="dimension"/>
-
-        <attr name="tag_closeMargins" format="dimension"/>
-        <attr name="tag_closeTopMargin" format="dimension"/>
-        <attr name="tag_closeBottomMargin" format="dimension"/>
-        <attr name="tag_closeLeftMargin" format="dimension"/>
-        <attr name="tag_closeRightMargin" format="dimension"/>
-
         <attr name="tag_dividerColor" format="color"/>
-        <attr name="tag_dividerWidth" format="dimension"/>
-        <attr name="tag_dividerMargins" format="dimension"/>
-        <attr name="tag_dividerLeftMargin" format="dimension"/>
-        <attr name="tag_dividerTopMargin" format="dimension"/>
-        <attr name="tag_dividerRightMargin" format="dimension"/>
-        <attr name="tag_dividerBottomMargin" format="dimension"/>
-
     </declare-styleable>
 
 </resources>

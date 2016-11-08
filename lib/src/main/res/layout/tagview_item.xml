@@ -7,8 +7,7 @@
         android:id="@+id/card_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        card_view:cardCornerRadius="4dp">
+        android:layout_gravity="center">
 
         <RelativeLayout
             android:layout_margin="5dp"
@@ -20,9 +19,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:text="Tag_Text"/>
-
-
+                android:text="Tag_Text"
+                />
 
             <ImageView
                 android:scaleType="centerCrop"
@@ -31,7 +29,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/tv_tag"
-                android:src="@drawable/ic_close_black_18dp"
                 android:layout_toRightOf="@id/tv_tag"
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"/>
@@ -41,7 +38,6 @@
                 android:layout_width="1dp"
                 android:layout_height="20dp"
                 android:layout_toRightOf="@id/tv_tag"
-                android:background="@android:color/transparent"
                 android:layout_marginLeft="2.5dp"
                 android:layout_marginStart="2.5dp"/>
 
