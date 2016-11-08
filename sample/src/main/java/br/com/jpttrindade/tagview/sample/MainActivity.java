@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import br.com.jpttrindade.tagview.widget.OnTagClickListener;
-import br.com.jpttrindade.tagview.widget.Tag;
-import br.com.jpttrindade.tagview.widget.TagView;
+import br.com.jpttrindade.tagview.OnTagClickListener;
+import br.com.jpttrindade.tagview.Tag;
+import br.com.jpttrindade.tagview.TagView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String tag_text = et_text.getText().toString();
                 if (tag_text != null && !tag_text.isEmpty()) {
-                    Tag tag = new Tag(tag_text, Color.GRAY, 0, false);
+                    Tag tag = new Tag(tag_text, Color.parseColor("#e53935"));
                     tagView.addTag(tag);
                 }
             }
@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case TagView.ONCLICK_REMOVE:
                         Log.d("DEBUG", "OnClickRemove");
-                        tagView.removeTag(tag);
                         break;
                     case TagView.ONCLICK_DEFAULT:
                         Log.d("DEBUG", "OnClickDefault");
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //String text, int color, int imgID ,boolean editable
-        Tag tag1 = new Tag("Tag_1", Color.GRAY, 0, false);
+        Tag tag1 = new Tag("Tag_1", Color.parseColor("#f06292"), R.drawable.ic_close_circle_black_18dp , false);
 //        Tag tag2 = new Tag("Tag_2", Color.GRAY, 0, false);
 //        Tag tag3 = new Tag("Tag_3", Color.GRAY, 0, false);
 //        Tag tag4 = new Tag("Tag_4", Color.GRAY, 0, false);
