@@ -1,0 +1,21 @@
+<resources>
+
+    <declare-styleable name="TagView">
+
+        <attr name="tag_textBold" format="boolean"/>
+        <attr name="tag_textSize" format="dimension"/>
+        <attr name="tag_textColor" format="color"/>
+        <attr name="tag_textPadding" format="dimension"/>
+        <attr name="tag_textLeftPadding" format="dimension"/>
+        <attr name="tag_textRightPadding" format="dimension"/>
+        <attr name="tag_textTopPadding" format="dimension"/>
+        <attr name="tag_textBottomPadding" format="dimension"/>
+
+        <attr name="tag_cornerRadius" format="dimension"/>
+        <attr name="tag_height" format="dimension"/>
+
+        <attr name="tag_closeSrc" format="reference" />
+        <attr name="tag_dividerColor" format="color"/>
+    </declare-styleable>
+
+</resources>

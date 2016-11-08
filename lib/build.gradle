@@ -1,0 +1,66 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+def getVersionName(){
+    return '2.0'
+}
+
+
+def getArtefactName()
+{
+    return 'TagView'
+}
+
+
+group = 'br.com.jpttrindade'
+version = getVersionName()
+
+
+
+configurations { //adiciona a função de criação de pom nos passos de configurações
+    criarPom
+}
+
+task createPom { //task pra criação do POM corretamente para descrição no repositório
+    ext.newPomFile = "${buildDir}/${artefactName}-${versionName}.pom"//formato
+    doLast {
+        pom {
+            project {
+                packaging 'aar' //talvez aqui facilite e não precisaremos colocar o @aar nas dependencias
+            }
+        }.writeTo(newPomFile)
+    }
+}
+preBuild.dependsOn(createPom) //Gera o pom antes de buildar
+
+
+
+artifacts {
+    criarPom file(createPom.newPomFile)//cria pom apenas para artefatos
+}
+
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.0"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName getVersionName();
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:recyclerview-v7:23.0.0'
+    compile 'com.android.support:cardview-v7:23.0.0'
+}
