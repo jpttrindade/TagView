@@ -1,9 +1,54 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
 
 def getVersionName(){
     return '2.0'
 }
+
+
+ext {
+
+    bintrayRepo = 'br.com.jpttrindade'
+
+    bintrayName = 'TagView'
+
+
+
+    publishedGroupId = 'br.com.jpttrindade'
+
+    libraryName = 'TagView'
+
+    artifact = 'lib'
+
+    libraryDescription = 'TagView'
+
+
+
+    siteUrl = 'https://github.com/jpttrindade/TagView'
+
+    gitUrl = 'https://github.com/jpttrindade/TagView.git'
+
+
+
+    libraryVersion = getVersionName()
+
+
+
+    developerId = 'jpttrindade'
+
+    developerName = 'Joao Paulo T Trindade'
+
+    developerEmail = 'tenoriojpaulo@gmail.com'
+
+
+
+    licenseName = 'The MIT License (MIT)'
+
+    licenseUrl = 'https://opensource.org/licenses/MIT'
+
+    allLicenses = ["MIT"]
+
+}
+
 
 
 def getArtefactName()
@@ -14,30 +59,6 @@ def getArtefactName()
 
 group = 'br.com.jpttrindade'
 version = getVersionName()
-
-
-
-configurations { //adiciona a função de criação de pom nos passos de configurações
-    criarPom
-}
-
-task createPom { //task pra criação do POM corretamente para descrição no repositório
-    ext.newPomFile = "${buildDir}/${artefactName}-${versionName}.pom"//formato
-    doLast {
-        pom {
-            project {
-                packaging 'aar' //talvez aqui facilite e não precisaremos colocar o @aar nas dependencias
-            }
-        }.writeTo(newPomFile)
-    }
-}
-preBuild.dependsOn(createPom) //Gera o pom antes de buildar
-
-
-
-artifacts {
-    criarPom file(createPom.newPomFile)//cria pom apenas para artefatos
-}
 
 
 android {
@@ -56,6 +77,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+
+        abortOnError false
+
+    }
+}
+
+repositories {
+
+    maven {
+
+        url 'https://dl.bintray.com/jpttrindade/br.com.jpttrindade'
+
+    }
+
 }
 
 dependencies {
@@ -63,4 +100,14 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support:recyclerview-v7:25.0.0'
     compile 'com.android.support:cardview-v7:25.0.0'
+}
+
+
+
+if (project.rootProject.file('local.properties').exists()) {
+
+    apply from: 'https://raw.githubusercontent.com/jpttrindade/JCenter/master/installv1.gradle'
+
+    apply from: 'https://raw.githubusercontent.com/jpttrindade/JCenter/master/bintrayv1.gradle'
+
 }
