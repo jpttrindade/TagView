@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 def getVersionName(){
-    return '2.0'
+    return '1.0'
 }
 
 
@@ -17,7 +17,7 @@ ext {
 
     libraryName = 'TagView'
 
-    artifact = 'lib'
+    artifact = getArtefactName()
 
     libraryDescription = 'TagView'
 
@@ -53,7 +53,7 @@ ext {
 
 def getArtefactName()
 {
-    return 'TagView'
+    return 'tagview'
 }
 
 
@@ -72,10 +72,7 @@ android {
         versionName getVersionName();
     }
     buildTypes {
-//        release {
-//            minifyEnabled false
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//        }
+
     }
 
     lintOptions {
