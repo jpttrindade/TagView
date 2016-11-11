@@ -7,7 +7,7 @@ With TagView you can edit tag's style and set listener of deleting tag.
 ![TagView PNG][1] ![TagView PGN][2]
 
 ## Including in your project
-compile 'br.com.jpttrindade:TagView:\<version\>'
+compile 'br.com.jpttrindade:tagview:\<version\>'
 
 [1]: https://github.com/jpttrindade/TagView/blob/master/screenshots/screenshot1.png
 [2]: https://github.com/jpttrindade/TagView/blob/master/screenshots/screenshot2.png
