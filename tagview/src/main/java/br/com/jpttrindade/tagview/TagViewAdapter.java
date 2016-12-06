@@ -119,6 +119,21 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 		return vh;
 	}
 
+	public void removeAll() {
+		mDataset.clear();
+		notifyDataSetChanged();
+	}
+
+	public void removeTag(Tag tag) {
+		mDataset.remove(tag);
+		notifyDataSetChanged();
+	}
+
+	public void removeTag(int position) {
+		mDataset.remove(position);
+		notifyDataSetChanged();
+	}
+
 	public class TagItemViewHolder extends RecyclerView.ViewHolder {
 		private View divider_tag;
 		public TextView mTextView;

@@ -8,7 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-public class TagView extends RecyclerView{
+public class TagView extends RecyclerView implements ITagview{
 
 	public static final int ONCLICK_DEFAULT = 0;
 	public static final int ONCLICK_EDIT = 1;
@@ -72,6 +72,7 @@ public class TagView extends RecyclerView{
 		}
 	}
 
+	@Override
 	public boolean addTag(Tag newTag){
 		boolean contains = mAdapter.contains(newTag);
 		if(!contains){
@@ -90,12 +91,29 @@ public class TagView extends RecyclerView{
 		}
 	}
 
+	@Override
 	public ArrayList<Tag> getAll(){
 		return mAdapter.getDataSet();
 	}
 
+	@Override
 	public int getCount(){
 		return mAdapter.getItemCount();
+	}
+
+	@Override
+	public void removeAll() {
+		mAdapter.removeAll();
+	}
+
+	@Override
+	public void remove(Tag tag) {
+		mAdapter.removeTag(tag);
+	}
+
+	@Override
+	public void remove(int position) {
+		mAdapter.removeTag(position);
 	}
 
 	@Override
@@ -104,6 +122,7 @@ public class TagView extends RecyclerView{
 		mAdapter = (TagViewAdapter) adapter;
 	}
 
+	@Override
 	public void setOnTagClickListener(OnTagClickListener onTagClickListener) {
 		this.mOnTagClickListener = onTagClickListener;
 	}

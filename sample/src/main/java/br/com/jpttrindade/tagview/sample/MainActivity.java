@@ -20,6 +20,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         final TagView tagView = (TagView) findViewById(R.id.tagview);
         final EditText et_text = (EditText) findViewById(R.id.et_text);
+        final Button bt_remove_all = (Button) findViewById(R.id.bt_remove_all);
+
+        bt_remove_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tagView.removeAll();
+            }
+        });
+
         final Button bt_add_tag = (Button) findViewById(R.id.bt_add_tag);
 
         bt_add_tag.setOnClickListener(new View.OnClickListener() {

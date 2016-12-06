@@ -42,6 +42,16 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
+        <Button
+            android:text="REMOVE ALL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bt_remove_all"
+            android:layout_alignBaseline="@+id/bt_add_tag"
+            android:layout_alignBottom="@+id/bt_add_tag"
+            android:layout_toStartOf="@+id/bt_add_tag"
+            android:layout_marginEnd="15dp" />
+
     </RelativeLayout>
 
 </RelativeLayout>
