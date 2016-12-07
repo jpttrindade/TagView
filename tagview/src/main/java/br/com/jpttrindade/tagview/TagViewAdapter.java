@@ -44,14 +44,15 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 	private int mTextViewMaxWidth;
 
 
-	public TagViewAdapter(Context context,TypedArray typedArray, OnTagClickListener onClickListener) {
-		this(context, typedArray,new ArrayList<Tag>(), onClickListener);
+	public TagViewAdapter(Context context, TagView tagView,TypedArray typedArray, OnTagClickListener onClickListener) {
+		this(context, tagView, typedArray,new ArrayList<Tag>(), onClickListener);
 	}
 
-	public TagViewAdapter(Context context ,TypedArray typedArray, ArrayList<Tag> tags, OnTagClickListener onClickListener) {
+	public TagViewAdapter(Context context, TagView tagView,TypedArray typedArray, ArrayList<Tag> tags, OnTagClickListener onClickListener) {
 		mDataset = tags;
 		this.mOnTagClickListener = onClickListener;
 		mContext = context;
+		TagView mTagView = tagView;
 		mDisplayMetrics = mContext.getResources().getDisplayMetrics();
 		getAttrs(typedArray);
 	}
@@ -107,7 +108,7 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 		Tag tag = mDataset.get(position); 
 		holder.mTextView.setText(tag.text);
 		holder.mTextView.setTag(tag);
-		holder.mImageButton.setTag(tag);
+		//holder.mImageButton.setTag(tag);
 		holder.container.setTag(tag);
 		holder.container.setCardBackgroundColor(tag.color);
 		holder.mTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, tag.imgID, 0);
@@ -143,9 +144,9 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 	}
 
 	public class TagItemViewHolder extends RecyclerView.ViewHolder {
-		private View divider_tag;
+		//private View divider_tag;
 		public TextView mTextView;
-		public ImageView mImageButton;
+		//public ImageView mImageButton;
 		public int position;
 		public CardView container;
 
@@ -159,9 +160,9 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 			container.setRadius(mCardViewCornerRadius);
 			container.setPreventCornerOverlap(false);
 
-			divider_tag = v.findViewById(R.id.divider_tag);
-			divider_tag.setBackgroundColor(mDividerColor);
-			divider_tag.setAlpha(Color.alpha(mDividerColor));
+//			divider_tag = v.findViewById(R.id.divider_tag);
+//			divider_tag.setBackgroundColor(mDividerColor);
+//			divider_tag.setAlpha(Color.alpha(mDividerColor));
 
 			mTextView = (TextView)v.findViewById(R.id.tv_tag);
 			//mTextView.setMaxWidth(mTextViewMaxWidth);
@@ -171,19 +172,19 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 			mTextView.setGravity(Gravity.CENTER);
 			mTextView.setTextColor(mTextViewTextColor);
 			mTextView.setTextSize(mTextViewTextSizeTypedValue, mTextViewTextSize);
-			mImageButton = (ImageView) v.findViewById(R.id.iv_excluir_tag);
-
-			mImageButton.setImageResource(mImageId);
-
-
-			//mTextView.setOnClickListener(TagViewAdapter.this);
-			mImageButton.setOnClickListener(TagViewAdapter.this);
+//			mImageButton = (ImageView) v.findViewById(R.id.iv_excluir_tag);
+//
+//			mImageButton.setImageResource(mImageId);
+//
+//
+//			//mTextView.setOnClickListener(TagViewAdapter.this);
+//			mImageButton.setOnClickListener(TagViewAdapter.this);
 			container.setOnClickListener(TagViewAdapter.this);
 
 			Tag tag = mDataset.get(position);
 			container.setTag(tag);
 			mTextView.setTag(tag);
-			mImageButton.setTag(tag);
+//			mImageButton.setTag(tag);
 			
 		}
 	}

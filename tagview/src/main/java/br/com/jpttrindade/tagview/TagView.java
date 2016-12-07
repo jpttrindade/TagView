@@ -8,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 
 public class TagView extends RecyclerView implements ITagview{
 
@@ -58,7 +59,7 @@ public class TagView extends RecyclerView implements ITagview{
 
 		setLayoutManager();
 
-		setAdapter(new TagViewAdapter(getContext(), typedArray, new OnTagClickListener() {
+		setAdapter(new TagViewAdapter(getContext(), this, typedArray, new OnTagClickListener() {
 			@Override
 			public void onTagClick(Tag tag, int position, int clickType) {
 				switch(clickType){
@@ -76,20 +77,32 @@ public class TagView extends RecyclerView implements ITagview{
 		}));
 	}
 
+	@Override
+	protected void onMeasure(int widthSpec, int heightSpec) {
+		super.onMeasure(widthSpec, heightSpec);
+		if (mLayoutType == GRID) {
+			//((GridLayoutManager)getLayoutManager()).setSpanCount(100);
+		}
+
+		Log.d("DEBUG", "WIDTH SPC = "+widthSpec);
+
+	}
 
 	private void setLayoutManager() {
 
-		LayoutManager layoutManager;
+		final LayoutManager layoutManager;
 		switch (mLayoutType) {
 			case GRID:
-				layoutManager = new GridLayoutManager(getContext(), mGridSpans);
+				layoutManager = new GridLayoutManager(getContext(), 10);
 
 				((GridLayoutManager) layoutManager).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 					@Override
 					public int getSpanSize(int position) {
 						int lenght = mAdapter.getTag(position).text.length();
 
-						return mTagSpanSizeLookup.getSpanSize(lenght, position, mGridSpans);
+						//lenght = (layoutManager).findViewByPosition(position).getMeasuredWidth();
+
+						return mTagSpanSizeLookup.getSpanSize(lenght, position, 10/mGridSpans);
 					}
 				});
 
