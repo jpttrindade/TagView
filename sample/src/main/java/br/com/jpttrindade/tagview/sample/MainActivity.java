@@ -59,6 +59,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        tagView.setTagSpanSizeLookup(new TagView.TagSpanSizeLookup() {
+            @Override
+            public int getSpanSize(int textSize, int position, int spans) {
+
+                if (textSize <= 6) {
+                    return 1;
+                } else if ( textSize > 6 && textSize <= 17) {
+                    return 2;
+                } else if (textSize > 17 && textSize <= 28) {
+                    return 3;
+                }
+                return 4 ;
+            }
+        });
+
         //String text, int color, int imgID ,boolean editable
         Tag tag1 = new Tag("Tag_1", Color.parseColor("#f06292"), R.drawable.ic_close_circle_black_18dp , false);
 //        Tag tag2 = new Tag("Tag_2", Color.GRAY, 0, false);

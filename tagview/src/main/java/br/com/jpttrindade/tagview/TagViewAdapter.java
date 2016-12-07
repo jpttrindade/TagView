@@ -41,6 +41,7 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 	private int mTextViewTextSizeTypedValue;
 	private int mTextViewTextColor;
 	private int mDividerColor;
+	private int mTextViewMaxWidth;
 
 
 	public TagViewAdapter(Context context,TypedArray typedArray, OnTagClickListener onClickListener) {
@@ -65,6 +66,9 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 					(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, mDisplayMetrics));
 			mCardViewMargins = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, mDisplayMetrics);
 
+
+			mTextViewMaxWidth = typedArray.getDimensionPixelSize(R.styleable.TagView_tag_maxWidth,
+					(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, LinearLayout.LayoutParams.WRAP_CONTENT, mDisplayMetrics));
 
 			mTextViewBold = typedArray.getBoolean(R.styleable.TagView_tag_textBold, true);
 			mTextViewPadding = typedArray.getDimensionPixelSize(R.styleable.TagView_tag_textPadding,
@@ -134,6 +138,10 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 		notifyDataSetChanged();
 	}
 
+	public Tag getTag(int position) {
+		return mDataset.get(position);
+	}
+
 	public class TagItemViewHolder extends RecyclerView.ViewHolder {
 		private View divider_tag;
 		public TextView mTextView;
@@ -143,7 +151,6 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 
 		public TagItemViewHolder(View v) {
 			super(v);
-
 			container =  (CardView) v.findViewById(R.id.card_view);
 
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,mCardViewHeight);
@@ -157,6 +164,7 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 			divider_tag.setAlpha(Color.alpha(mDividerColor));
 
 			mTextView = (TextView)v.findViewById(R.id.tv_tag);
+			//mTextView.setMaxWidth(mTextViewMaxWidth);
 
 			if (mTextViewBold) mTextView.setTypeface(null, Typeface.BOLD);
 			mTextView.setPadding(mTextViewLeftPadding,mTextViewTopPadding,mTextViewRightPadding,mTextViewBottomPadding);
