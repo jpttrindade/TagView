@@ -20,6 +20,8 @@
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:text="Tag_Text"
+                android:ellipsize="end"
+                android:maxLines="1"
                 />
 
             <ImageView

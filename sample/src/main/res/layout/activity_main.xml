@@ -12,7 +12,9 @@
 <br.com.jpttrindade.tagview.TagView
     android:id="@+id/tagview"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    app:layout_type="grid"
+    app:grid_spans="4"/>
 
     <RelativeLayout
         android:layout_below="@+id/tagview"
