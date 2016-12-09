@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemViewHolder> implements View.OnClickListener{
 
+	private final TagView mTagView;
 	private ArrayList<Tag> mDataset;
 
 	private OnTagClickListener mOnTagClickListener;
@@ -33,15 +34,13 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 	private DisplayMetrics mDisplayMetrics;
 	private boolean mTextViewBold;
 	private int mTextViewPadding;
-	private int mTextViewLeftPadding;
+	int mTextViewLeftPadding;
 	private int mTextViewTopPadding;
-	private int mTextViewRightPadding;
+	int mTextViewRightPadding;
 	private int mTextViewBottomPadding;
-	private float mTextViewTextSize;
-	private int mTextViewTextSizeTypedValue;
+	float mTextViewTextSize;
+	int mTextViewTextSizeTypedValue;
 	private int mTextViewTextColor;
-	private int mDividerColor;
-	private int mTextViewMaxWidth;
 
 
 	public TagViewAdapter(Context context, TagView tagView,TypedArray typedArray, OnTagClickListener onClickListener) {
@@ -52,7 +51,7 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 		mDataset = tags;
 		this.mOnTagClickListener = onClickListener;
 		mContext = context;
-		TagView mTagView = tagView;
+		mTagView = tagView;
 		mDisplayMetrics = mContext.getResources().getDisplayMetrics();
 		getAttrs(typedArray);
 	}
@@ -65,11 +64,8 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 					TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,LinearLayout.LayoutParams.WRAP_CONTENT, mDisplayMetrics));
 			mCardViewCornerRadius = typedArray.getDimension(R.styleable.TagView_tag_cornerRadius,
 					(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, mDisplayMetrics));
-			mCardViewMargins = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, mDisplayMetrics);
+			mCardViewMargins = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2f, mDisplayMetrics);
 
-
-			mTextViewMaxWidth = typedArray.getDimensionPixelSize(R.styleable.TagView_tag_maxWidth,
-					(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, LinearLayout.LayoutParams.WRAP_CONTENT, mDisplayMetrics));
 
 			mTextViewBold = typedArray.getBoolean(R.styleable.TagView_tag_textBold, true);
 			mTextViewPadding = typedArray.getDimensionPixelSize(R.styleable.TagView_tag_textPadding,
@@ -87,10 +83,8 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 			mTextViewTextSizeTypedValue = TypedValue.COMPLEX_UNIT_PX;
 			mTextViewTextColor = typedArray.getColor(R.styleable.TagView_tag_textColor, Color.WHITE);
 
-			mImageId = typedArray.getResourceId(R.styleable.TagView_tag_closeSrc, R.drawable.ic_close_circle_white_18dp);
+			mImageId = typedArray.getResourceId(R.styleable.TagView_tag_closeSrc, R.drawable.ic_close_circle_white_48dp);
 
-			mDividerColor = typedArray.getColor(R.styleable.TagView_tag_dividerColor, Color.TRANSPARENT);
-		
 			
 		} finally {
 			typedArray.recycle();
@@ -108,17 +102,26 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 		Tag tag = mDataset.get(position); 
 		holder.mTextView.setText(tag.text);
 		holder.mTextView.setTag(tag);
-		//holder.mImageButton.setTag(tag);
+		holder.mImageButton.setTag(tag);
 		holder.container.setTag(tag);
 		holder.container.setCardBackgroundColor(tag.color);
-		holder.mTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, tag.imgID, 0);
+		//holder.mTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, tag.imgID, 0);
 	}
 
 	@Override
 	public TagItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
 		LayoutInflater inflater = LayoutInflater.from(mContext);
-		View root = inflater.inflate(R.layout.tagview_item, parent, false);
+
+		View root;
+
+		if (mTagView.layoutType == TagView.GRID) {
+			root = inflater.inflate(R.layout.tagview_item_grid, parent, false);
+		} else {
+			root = inflater.inflate(R.layout.tagview_item, parent, false);
+		}
+
+
 		TagItemViewHolder vh = new TagItemViewHolder(root);
 
 		return vh;
@@ -146,7 +149,7 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 	public class TagItemViewHolder extends RecyclerView.ViewHolder {
 		//private View divider_tag;
 		public TextView mTextView;
-		//public ImageView mImageButton;
+		public ImageView mImageButton;
 		public int position;
 		public CardView container;
 
@@ -172,19 +175,19 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 			mTextView.setGravity(Gravity.CENTER);
 			mTextView.setTextColor(mTextViewTextColor);
 			mTextView.setTextSize(mTextViewTextSizeTypedValue, mTextViewTextSize);
-//			mImageButton = (ImageView) v.findViewById(R.id.iv_excluir_tag);
-//
-//			mImageButton.setImageResource(mImageId);
-//
-//
-//			//mTextView.setOnClickListener(TagViewAdapter.this);
-//			mImageButton.setOnClickListener(TagViewAdapter.this);
+			mImageButton = (ImageView) v.findViewById(R.id.iv_excluir_tag);
+
+			mImageButton.setImageResource(mImageId);
+
+
+			//mTextView.setOnClickListener(TagViewAdapter.this);
+			mImageButton.setOnClickListener(TagViewAdapter.this);
 			container.setOnClickListener(TagViewAdapter.this);
 
 			Tag tag = mDataset.get(position);
 			container.setTag(tag);
 			mTextView.setTag(tag);
-//			mImageButton.setTag(tag);
+			mImageButton.setTag(tag);
 			
 		}
 	}
@@ -240,13 +243,5 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 	public ArrayList<Tag> getDataSet() {
 		return mDataset;
 	}
-
-
-
-	
-
-
-
-
 
 }
