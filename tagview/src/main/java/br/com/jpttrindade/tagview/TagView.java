@@ -117,10 +117,21 @@ public class TagView extends RecyclerView implements ITagview{
 						int textViewWidth = bounds.width();
 						int itemSpan = (int)(textViewWidth/mDensity)+ 2/*leftPadding*/ + 2/*rightPadding*/+18 /*closeImagemWidth*/ + 18 /*margins*/  ;
 
+						int spansPerItem = mMaxSpan/mGridSpans;
+
 						if (mGridSpans == 1) {
 							itemSpan =  itemSpan>mMaxSpan? mMaxSpan: itemSpan;
 						} else {
-							itemSpan = mMaxSpan/mGridSpans;
+
+							if (mAdapter.getItemCount() == 1) {
+								if (itemSpan <= spansPerItem) {
+									itemSpan = spansPerItem;
+								} else {
+									itemSpan =  itemSpan>mMaxSpan? mMaxSpan: itemSpan;
+								}
+							} else {
+								itemSpan = spansPerItem;
+							}
 						}
 
 						return itemSpan;
@@ -161,6 +172,9 @@ public class TagView extends RecyclerView implements ITagview{
 	private void removeTag(Tag tag, int position){
 		getLayoutManager().scrollToPosition(position);
 		mAdapter.removeTag(tag, position);
+
+
+
 		if (mOnTagClickListener != null) {
 			mOnTagClickListener.onTagClick(tag, position, TagView.ONCLICK_REMOVE);
 		}
