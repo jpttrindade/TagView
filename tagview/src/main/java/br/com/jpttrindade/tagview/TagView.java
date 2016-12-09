@@ -1,20 +1,28 @@
 package br.com.jpttrindade.tagview;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.view.Gravity;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class TagView extends RecyclerView implements ITagview{
 
 	public static final int ONCLICK_DEFAULT = 0;
 	public static final int ONCLICK_EDIT = 1;
 	public static final int ONCLICK_REMOVE = 2;
-	private static final int GRID = 1;
+
+	static final int GRID = 1;
+
+	private static int mMaxSpan = 500;
 
 	private OnTagClickListener mOnTagClickListener;
 
@@ -23,9 +31,13 @@ public class TagView extends RecyclerView implements ITagview{
 	private AttributeSet mAttributeSet;
 
 	private TypedArray typedArray;
-	private int mLayoutType;
+
 	private int mGridSpans;
-	private TagSpanSizeLookup mTagSpanSizeLookup;
+	private TextView mTextView;
+	private float mDensity;
+
+
+	int layoutType;
 
 	public TagView(Context context) {
 		super(context);
@@ -45,20 +57,16 @@ public class TagView extends RecyclerView implements ITagview{
 	}
 
 	private void init() {
+		mDensity = getResources().getDisplayMetrics().density;
+
 		typedArray = getContext().getTheme().obtainStyledAttributes(mAttributeSet, R.styleable.TagView, 0,0);
 
-		mLayoutType = typedArray.getInt(R.styleable.TagView_layout_type, 0);
-		mGridSpans = typedArray.getInt(R.styleable.TagView_grid_spans, 3);
-		mTagSpanSizeLookup = new TagSpanSizeLookup() {
-			@Override
-			public int getSpanSize(int textSize, int position, int spans) {
-				return 1;
-			}
-		};
+		layoutType = typedArray.getInt(R.styleable.TagView_layout_type, 0);
+		mGridSpans = typedArray.getInt(R.styleable.TagView_grid_spans, 1);
 
 		setLayoutManager();
 
-		setAdapter(new TagViewAdapter(getContext(), typedArray, new OnTagClickListener() {
+		setAdapter(new TagViewAdapter(getContext(), this, typedArray, new OnTagClickListener() {
 			@Override
 			public void onTagClick(Tag tag, int position, int clickType) {
 				switch(clickType){
@@ -74,22 +82,48 @@ public class TagView extends RecyclerView implements ITagview{
 				}
 			}
 		}));
+
+		mTextView = new TextView(getContext());
+		mTextView.setTypeface(null, Typeface.BOLD);
+		mTextView.setGravity(Gravity.CENTER);
+		mTextView.setTextSize(mAdapter.mTextViewTextSizeTypedValue, mAdapter.mTextViewTextSize);
+		mTextView.setPadding(mAdapter.mTextViewLeftPadding, 0, mAdapter.mTextViewRightPadding, 0);
 	}
 
+	@Override
+	protected void onMeasure(int widthSpec, int heightSpec) {
+		super.onMeasure(widthSpec, heightSpec);
+		if (layoutType == GRID) {
+			mMaxSpan = (int) (getMeasuredWidth() / getResources().getDisplayMetrics().density);
+			((GridLayoutManager) getLayoutManager()).setSpanCount(mMaxSpan);
+		}
+	}
 
 	private void setLayoutManager() {
 
-		LayoutManager layoutManager;
-		switch (mLayoutType) {
+		final LayoutManager layoutManager;
+		switch (layoutType) {
 			case GRID:
-				layoutManager = new GridLayoutManager(getContext(), mGridSpans);
+				layoutManager = new GridLayoutManager(getContext(), mMaxSpan);
 
 				((GridLayoutManager) layoutManager).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 					@Override
 					public int getSpanSize(int position) {
-						int lenght = mAdapter.getTag(position).text.length();
+						String text = mAdapter.getTag(position).text;
+						mTextView.setText(text);
+						Rect bounds = new Rect();
+						TextPaint textPaint = mTextView.getPaint();
+						textPaint.getTextBounds(text, 0, text.length(), bounds);
+						int textViewWidth = bounds.width();
+						int itemSpan = (int)(textViewWidth/mDensity)+ 2/*leftPadding*/ + 2/*rightPadding*/+18 /*closeImagemWidth*/ + 18 /*margins*/  ;
 
-						return mTagSpanSizeLookup.getSpanSize(lenght, position, mGridSpans);
+						if (mGridSpans == 1) {
+							itemSpan =  itemSpan>mMaxSpan? mMaxSpan: itemSpan;
+						} else {
+							itemSpan = mMaxSpan/mGridSpans;
+						}
+
+						return itemSpan;
 					}
 				});
 
@@ -98,11 +132,11 @@ public class TagView extends RecyclerView implements ITagview{
 				layoutManager = new LinearLayoutManager(getContext());
 				((LinearLayoutManager)layoutManager).setOrientation(LinearLayoutManager.HORIZONTAL);
 
+
 		}
 
 		setLayoutManager(layoutManager);
 	}
-
 
 
 	private void onEditTag(Tag tag, int position) {
@@ -168,13 +202,4 @@ public class TagView extends RecyclerView implements ITagview{
 		this.mOnTagClickListener = onTagClickListener;
 	}
 
-	@Override
-	public void setTagSpanSizeLookup(final TagSpanSizeLookup spanSizeLookup) {
-
-		mTagSpanSizeLookup = spanSizeLookup;
-	}
-
-	public interface TagSpanSizeLookup {
-		int getSpanSize(int textSize, int position, int spans);
-	}
 }
