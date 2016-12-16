@@ -85,7 +85,7 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 
 			mImageId = typedArray.getResourceId(R.styleable.TagView_tag_closeSrc, R.drawable.ic_close_circle_white_48dp);
 
-			
+
 		} finally {
 			typedArray.recycle();
 		}
@@ -99,7 +99,7 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 
 	@Override
 	public void onBindViewHolder(TagItemViewHolder holder, int position) {
-		Tag tag = mDataset.get(position); 
+		Tag tag = mDataset.get(position);
 		holder.mTextView.setText(tag.text);
 		holder.mTextView.setTag(tag);
 		holder.mImageButton.setTag(tag);
@@ -188,7 +188,7 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 			container.setTag(tag);
 			mTextView.setTag(tag);
 			mImageButton.setTag(tag);
-			
+
 		}
 	}
 
@@ -223,8 +223,8 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 
 
 	public void addTag(Tag newTag) {
-		mDataset.add(newTag);	
-		
+		mDataset.add(newTag);
+
 		notifyItemInserted(getItemCount());
 
 	}
