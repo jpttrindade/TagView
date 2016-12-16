@@ -5,5 +5,5 @@ package br.com.jpttrindade.tagview;
  */
 
 public interface OnTagClickListener {
-    void onTagClick(Tag tag, int position, int clickType);
+    boolean onTagClick(Tag tag, int position, int clickType);
 }

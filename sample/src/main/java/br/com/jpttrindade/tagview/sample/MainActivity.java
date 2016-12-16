@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         tagView.setOnTagClickListener(new OnTagClickListener() {
             @Override
-            public void onTagClick(Tag tag, int position, int clickType) {
+            public boolean onTagClick(Tag tag, int position, int clickType) {
                 switch (clickType) {
                     case TagView.ONCLICK_EDIT:
                         Log.d("DEBUG", "OnClickEdit");
@@ -65,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("DEBUG", "OnClickDefault");
                 }
 
+                tagView.remove(position);
+                return true;
             }
         });
     }

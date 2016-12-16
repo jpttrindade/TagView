@@ -68,18 +68,26 @@ public class TagView extends RecyclerView implements ITagview{
 
 		setAdapter(new TagViewAdapter(getContext(), this, typedArray, new OnTagClickListener() {
 			@Override
-			public void onTagClick(Tag tag, int position, int clickType) {
-				switch(clickType){
-					case ONCLICK_REMOVE:
-						removeTag(tag, position);
-						break;
-					case ONCLICK_EDIT:
-						onEditTag(tag,position);
-						break;
-					case ONCLICK_DEFAULT:
-						//nothing
-						break;
+			public boolean onTagClick(Tag tag, int position, int clickType) {
+
+				if (mOnTagClickListener != null) {
+					if (mOnTagClickListener.onTagClick(tag, position, clickType)) {
+						// nothing
+					} else {
+						switch(clickType){
+							case ONCLICK_REMOVE:
+								removeTag(tag, position);
+								break;
+							case ONCLICK_EDIT:
+								onEditTag(tag,position);
+								break;
+							case ONCLICK_DEFAULT:
+								//nothing
+								break;
+						}
+					}
 				}
+				return true;
 			}
 		}));
 
@@ -153,9 +161,9 @@ public class TagView extends RecyclerView implements ITagview{
 	private void onEditTag(Tag tag, int position) {
 		getLayoutManager().scrollToPosition(position);
 		mAdapter.removeTag(tag, position);
-		if (mOnTagClickListener != null) {
-			mOnTagClickListener.onTagClick(tag, position, TagView.ONCLICK_EDIT);
-		}
+//		if (mOnTagClickListener != null) {
+//			mOnTagClickListener.onTagClick(tag, position, TagView.ONCLICK_EDIT);
+//		}
 	}
 
 	@Override
@@ -172,12 +180,9 @@ public class TagView extends RecyclerView implements ITagview{
 	private void removeTag(Tag tag, int position){
 		getLayoutManager().scrollToPosition(position);
 		mAdapter.removeTag(tag, position);
-
-
-
-		if (mOnTagClickListener != null) {
-			mOnTagClickListener.onTagClick(tag, position, TagView.ONCLICK_REMOVE);
-		}
+//		if (mOnTagClickListener != null) {
+//			mOnTagClickListener.onTagClick(tag, position, TagView.ONCLICK_REMOVE);
+//		}
 	}
 
 	@Override
