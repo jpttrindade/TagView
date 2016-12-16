@@ -14,7 +14,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_type="grid"
-    app:grid_spans="2"/>
+    app:grid_spans="1"
+    app:tag_closeSrc="@drawable/ic_close_white_18dp"/>
 
     <RelativeLayout
         android:layout_below="@+id/tagview"

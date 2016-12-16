@@ -69,7 +69,7 @@ public class TagView extends RecyclerView implements ITagview{
 
 			mAdapter = new TagViewAdapter(getContext(), this, typedArray, new OnTagClickListener() {
 				@Override
-				public boolean onTagClick(Tag tag, int position, int clickType) {
+				public boolean onTagClick(DefaultTag tag, int position, int clickType) {
 
 					if (mOnTagClickListener != null) {
 						if (mOnTagClickListener.onTagClick(tag, position, clickType)) {
@@ -164,7 +164,7 @@ public class TagView extends RecyclerView implements ITagview{
 	}
 
 
-	private void onEditTag(Tag tag, int position) {
+	private void onEditTag(DefaultTag tag, int position) {
 		getLayoutManager().scrollToPosition(position);
 		mAdapter.removeTag(tag, position);
 //		if (mOnTagClickListener != null) {
@@ -173,7 +173,7 @@ public class TagView extends RecyclerView implements ITagview{
 	}
 
 	@Override
-	public boolean addTag(Tag newTag){
+	public boolean addTag(DefaultTag newTag){
 		boolean contains = mAdapter.contains(newTag);
 		if(!contains){
 			int total = getLayoutManager().getItemCount();
@@ -183,7 +183,7 @@ public class TagView extends RecyclerView implements ITagview{
 		return contains;
 	}
 
-	private void removeTag(Tag tag, int position){
+	private void removeTag(DefaultTag tag, int position){
 		getLayoutManager().scrollToPosition(position);
 		mAdapter.removeTag(tag, position);
 //		if (mOnTagClickListener != null) {
@@ -192,7 +192,7 @@ public class TagView extends RecyclerView implements ITagview{
 	}
 
 	@Override
-	public ArrayList<Tag> getAll(){
+	public ArrayList<DefaultTag> getAll(){
 		return mAdapter.getDataSet();
 	}
 
@@ -207,7 +207,7 @@ public class TagView extends RecyclerView implements ITagview{
 	}
 
 	@Override
-	public void remove(Tag tag) {
+	public void remove(DefaultTag tag) {
 		mAdapter.removeTag(tag);
 	}
 
