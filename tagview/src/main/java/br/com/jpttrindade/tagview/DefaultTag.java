@@ -3,7 +3,7 @@ package br.com.jpttrindade.tagview;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Tag implements Parcelable {
+public class DefaultTag implements Parcelable {
 	
 	public int color;
 	public String text;
@@ -12,20 +12,17 @@ public class Tag implements Parcelable {
 	public int id;
 	public int imgID;
 
-	public Tag(String text, int color) {
+	public DefaultTag(String text, int color) {
 		this(text, color, false);
 	}
 
-	public Tag (String text, int color, boolean editable) {
-		this(text, color, 0, editable);
-	}
-
-	public Tag(String text, int color, int imgID ,boolean editable) {
+	public DefaultTag(String text, int color, boolean editable) {
 		this.color = color;
 		this.text = text;
-		this.imgID = imgID;
 		this.editable = editable;
 	}
+
+
 
 	@Override
 	public int describeContents() {
@@ -40,24 +37,24 @@ public class Tag implements Parcelable {
 		dest.writeByte(editable ? (byte) 1 : (byte) 0);
 	}
 
-	protected Tag(Parcel in) {
+	protected DefaultTag(Parcel in) {
 		this.color = in.readInt();
 		this.text = in.readString();
 		this.imgID = in.readInt();
 		this.editable = in.readByte() != 0;
 	}
 
-	public static final Parcelable.Creator<Tag> CREATOR = new Parcelable.Creator<Tag>() {
-		public Tag createFromParcel(Parcel source) {
-			return new Tag(source);
+	public static final Parcelable.Creator<DefaultTag> CREATOR = new Parcelable.Creator<DefaultTag>() {
+		public DefaultTag createFromParcel(Parcel source) {
+			return new DefaultTag(source);
 		}
 
-		public Tag[] newArray(int size) {
-			return new Tag[size];
+		public DefaultTag[] newArray(int size) {
+			return new DefaultTag[size];
 		}
 	};
 
-	public boolean equals(Tag t) {
+	public boolean equals(DefaultTag t) {
 		if(t.type==type && t.text.equals(text)){
 			return true;
 		}
@@ -66,8 +63,8 @@ public class Tag implements Parcelable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Tag) {
-			Tag tag = (Tag) obj;
+		if (obj instanceof DefaultTag) {
+			DefaultTag tag = (DefaultTag) obj;
 			return tag.equals(this);
 		}
 		return super.equals(obj);

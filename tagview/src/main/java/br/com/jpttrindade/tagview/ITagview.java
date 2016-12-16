@@ -1,9 +1,5 @@
 package br.com.jpttrindade.tagview;
 
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -11,12 +7,12 @@ import java.util.ArrayList;
  */
 
 public interface ITagview {
-    ArrayList<Tag> getAll();
-    boolean addTag(Tag newTAg);
+    ArrayList<DefaultTag> getAll();
+    boolean addTag(DefaultTag newTAg);
     void setOnTagClickListener(OnTagClickListener onTagClickListener);
 
     int getCount();
     void removeAll();
-    void remove(Tag tag);
+    void remove(DefaultTag tag);
     void remove(int position);
 }

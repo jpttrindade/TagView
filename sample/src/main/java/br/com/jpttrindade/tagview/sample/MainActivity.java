@@ -1,23 +1,16 @@
 package br.com.jpttrindade.tagview.sample;
 
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextPaint;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import br.com.jpttrindade.tagview.OnTagClickListener;
-import br.com.jpttrindade.tagview.Tag;
+import br.com.jpttrindade.tagview.DefaultTag;
+import br.com.jpttrindade.tagview.SimpleTag;
 import br.com.jpttrindade.tagview.TagView;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String tag_text = et_text.getText().toString();
                 if (tag_text != null && !tag_text.isEmpty()) {
-                    Tag tag = new Tag(tag_text, Color.parseColor("#e53935"), R.drawable.ic_close_circle_white_18dp, false);
+                    DefaultTag tag = new DefaultTag(tag_text, Color.parseColor("#e53935"), false);
+                   // DefaultTag tag = new SimpleTag(tag_text, Color.parseColor("#e53935"));
                     tagView.addTag(tag);
                 }
             }
@@ -53,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         tagView.setOnTagClickListener(new OnTagClickListener() {
             @Override
-            public boolean onTagClick(Tag tag, int position, int clickType) {
+            public boolean onTagClick(DefaultTag tag, int position, int clickType) {
                 switch (clickType) {
                     case TagView.ONCLICK_EDIT:
                         Log.d("DEBUG", "OnClickEdit");

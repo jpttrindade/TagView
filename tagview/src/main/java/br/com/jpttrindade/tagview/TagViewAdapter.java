@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemViewHolder> implements View.OnClickListener{
 
 	private final TagView mTagView;
-	private ArrayList<Tag> mDataset;
+	private ArrayList<DefaultTag> mDataset;
 
 	private OnTagClickListener mOnTagClickListener;
 
@@ -44,10 +44,10 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 
 
 	public TagViewAdapter(Context context, TagView tagView,TypedArray typedArray, OnTagClickListener onClickListener) {
-		this(context, tagView, typedArray,new ArrayList<Tag>(), onClickListener);
+		this(context, tagView, typedArray,new ArrayList<DefaultTag>(), onClickListener);
 	}
 
-	public TagViewAdapter(Context context, TagView tagView,TypedArray typedArray, ArrayList<Tag> tags, OnTagClickListener onClickListener) {
+	public TagViewAdapter(Context context, TagView tagView, TypedArray typedArray, ArrayList<DefaultTag> tags, OnTagClickListener onClickListener) {
 		mDataset = tags;
 		this.mOnTagClickListener = onClickListener;
 		mContext = context;
@@ -99,10 +99,15 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 
 	@Override
 	public void onBindViewHolder(TagItemViewHolder holder, int position) {
-		Tag tag = mDataset.get(position);
+		DefaultTag tag = mDataset.get(position);
 		holder.mTextView.setText(tag.text);
 		holder.mTextView.setTag(tag);
-		holder.mImageButton.setTag(tag);
+		if (tag instanceof SimpleTag) {
+			holder.mImageButton.setVisibility(View.GONE);
+		} else {
+			holder.mImageButton.setTag(tag);
+			holder.mImageButton.setVisibility(View.VISIBLE);
+		}
 		holder.container.setTag(tag);
 		holder.container.setCardBackgroundColor(tag.color);
 		//holder.mTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, tag.imgID, 0);
@@ -132,17 +137,17 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 		notifyDataSetChanged();
 	}
 
-	public void removeTag(Tag tag) {
+	public void removeTag(DefaultTag tag) {
 		mDataset.remove(tag);
 		notifyDataSetChanged();
 	}
 
 	public void removeTag(int position) {
 		mDataset.remove(position);
-		notifyDataSetChanged();
+		notifyItemRemoved(position);
 	}
 
-	public Tag getTag(int position) {
+	public DefaultTag getTag(int position) {
 		return mDataset.get(position);
 	}
 
@@ -184,7 +189,7 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 			mImageButton.setOnClickListener(TagViewAdapter.this);
 			container.setOnClickListener(TagViewAdapter.this);
 
-			Tag tag = mDataset.get(position);
+			DefaultTag tag = mDataset.get(position);
 			container.setTag(tag);
 			mTextView.setTag(tag);
 			mImageButton.setTag(tag);
@@ -194,7 +199,7 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 
 	@Override
 	public void onClick(View v) {
-		Tag tag = (Tag) v.getTag();
+		DefaultTag tag = (DefaultTag) v.getTag();
 		int position = getTagPosition(tag);
 
 		if(v instanceof ImageView){
@@ -208,12 +213,12 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 		}
 	}
 
-	private int getTagPosition(Tag tag) {
+	private int getTagPosition(DefaultTag tag) {
 		int position;
-		Tag t;
+		DefaultTag t;
 		for(int i = 0; i<mDataset.size(); i++){
 			t = mDataset.get(i);
-			if(tag.equals((Tag)t)){
+			if(tag.equals((DefaultTag)t)){
 				position = i;
 				return position;
 			}
@@ -222,25 +227,25 @@ public class TagViewAdapter extends RecyclerView.Adapter<TagViewAdapter.TagItemV
 	}
 
 
-	public void addTag(Tag newTag) {
+	public void addTag(DefaultTag newTag) {
 		mDataset.add(newTag);
 
 		notifyItemInserted(getItemCount());
 
 	}
 
-	public int removeTag(Tag tag, int position) {
+	public int removeTag(DefaultTag tag, int position) {
 		mDataset.remove(position);
 		notifyItemRemoved(position);
 		//	notifyDataSetChanged();
 		return mDataset.size();
 	}
 
-	public boolean contains(Tag newTag) {
+	public boolean contains(DefaultTag newTag) {
 		return mDataset.contains(newTag);
 	}
 
-	public ArrayList<Tag> getDataSet() {
+	public ArrayList<DefaultTag> getDataSet() {
 		return mDataset;
 	}
 
