@@ -57,37 +57,48 @@ public class TagView extends RecyclerView implements ITagview{
 	}
 
 	private void init() {
-		mDensity = getResources().getDisplayMetrics().density;
+		if (!isInEditMode()) {
+			mDensity = getResources().getDisplayMetrics().density;
 
-		typedArray = getContext().getTheme().obtainStyledAttributes(mAttributeSet, R.styleable.TagView, 0,0);
+			typedArray = getContext().getTheme().obtainStyledAttributes(mAttributeSet, R.styleable.TagView, 0, 0);
 
-		layoutType = typedArray.getInt(R.styleable.TagView_layout_type, 0);
-		mGridSpans = typedArray.getInt(R.styleable.TagView_grid_spans, 1);
+			layoutType = typedArray.getInt(R.styleable.TagView_layout_type, 0);
+			mGridSpans = typedArray.getInt(R.styleable.TagView_grid_spans, 1);
 
-		setLayoutManager();
+			setLayoutManager();
 
-		setAdapter(new TagViewAdapter(getContext(), this, typedArray, new OnTagClickListener() {
-			@Override
-			public void onTagClick(Tag tag, int position, int clickType) {
-				switch(clickType){
-					case ONCLICK_REMOVE:
-						removeTag(tag, position);
-						break;
-					case ONCLICK_EDIT:
-						onEditTag(tag,position);
-						break;
-					case ONCLICK_DEFAULT:
-						//nothing
-						break;
+			mAdapter = new TagViewAdapter(getContext(), this, typedArray, new OnTagClickListener() {
+				@Override
+				public boolean onTagClick(Tag tag, int position, int clickType) {
+
+					if (mOnTagClickListener != null) {
+						if (mOnTagClickListener.onTagClick(tag, position, clickType)) {
+							// nothing
+						} else {
+							switch (clickType) {
+								case ONCLICK_REMOVE:
+									removeTag(tag, position);
+									break;
+								case ONCLICK_EDIT:
+									onEditTag(tag, position);
+									break;
+								case ONCLICK_DEFAULT:
+									//nothing
+									break;
+							}
+						}
+					}
+					return true;
 				}
-			}
-		}));
+			});
+			setAdapter(mAdapter);
 
-		mTextView = new TextView(getContext());
-		mTextView.setTypeface(null, Typeface.BOLD);
-		mTextView.setGravity(Gravity.CENTER);
-		mTextView.setTextSize(mAdapter.mTextViewTextSizeTypedValue, mAdapter.mTextViewTextSize);
-		mTextView.setPadding(mAdapter.mTextViewLeftPadding, 0, mAdapter.mTextViewRightPadding, 0);
+			mTextView = new TextView(getContext());
+			mTextView.setTypeface(null, Typeface.BOLD);
+			mTextView.setGravity(Gravity.CENTER);
+			mTextView.setTextSize(mAdapter.mTextViewTextSizeTypedValue, mAdapter.mTextViewTextSize);
+			mTextView.setPadding(mAdapter.mTextViewLeftPadding, 0, mAdapter.mTextViewRightPadding, 0);
+		}
 	}
 
 	@Override
@@ -95,6 +106,9 @@ public class TagView extends RecyclerView implements ITagview{
 		super.onMeasure(widthSpec, heightSpec);
 		if (layoutType == GRID) {
 			mMaxSpan = (int) (getMeasuredWidth() / getResources().getDisplayMetrics().density);
+			if (mMaxSpan == 0) {
+				mMaxSpan = 1;
+			}
 			((GridLayoutManager) getLayoutManager()).setSpanCount(mMaxSpan);
 		}
 	}
@@ -153,9 +167,9 @@ public class TagView extends RecyclerView implements ITagview{
 	private void onEditTag(Tag tag, int position) {
 		getLayoutManager().scrollToPosition(position);
 		mAdapter.removeTag(tag, position);
-		if (mOnTagClickListener != null) {
-			mOnTagClickListener.onTagClick(tag, position, TagView.ONCLICK_EDIT);
-		}
+//		if (mOnTagClickListener != null) {
+//			mOnTagClickListener.onTagClick(tag, position, TagView.ONCLICK_EDIT);
+//		}
 	}
 
 	@Override
@@ -172,12 +186,9 @@ public class TagView extends RecyclerView implements ITagview{
 	private void removeTag(Tag tag, int position){
 		getLayoutManager().scrollToPosition(position);
 		mAdapter.removeTag(tag, position);
-
-
-
-		if (mOnTagClickListener != null) {
-			mOnTagClickListener.onTagClick(tag, position, TagView.ONCLICK_REMOVE);
-		}
+//		if (mOnTagClickListener != null) {
+//			mOnTagClickListener.onTagClick(tag, position, TagView.ONCLICK_REMOVE);
+//		}
 	}
 
 	@Override
@@ -203,12 +214,6 @@ public class TagView extends RecyclerView implements ITagview{
 	@Override
 	public void remove(int position) {
 		mAdapter.removeTag(position);
-	}
-
-	@Override
-	public void setAdapter(Adapter adapter) {
-		super.setAdapter(adapter);
-		mAdapter = (TagViewAdapter) adapter;
 	}
 
 	@Override
