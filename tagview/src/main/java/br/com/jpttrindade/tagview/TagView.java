@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
 
@@ -104,6 +106,9 @@ public class TagView extends RecyclerView implements ITagview{
 	@Override
 	protected void onMeasure(int widthSpec, int heightSpec) {
 		super.onMeasure(widthSpec, heightSpec);
+		mMaxSpan = (int) (getMeasuredWidth() / getResources().getDisplayMetrics().density);
+		Log.d("DEBUG", "mDensity = "+mDensity);
+		Log.d("DEBUG", "mMaxSpan = "+mMaxSpan);
 		if (layoutType == GRID) {
 			mMaxSpan = (int) (getMeasuredWidth() / getResources().getDisplayMetrics().density);
 			if (mMaxSpan == 0) {
@@ -124,17 +129,23 @@ public class TagView extends RecyclerView implements ITagview{
 					@Override
 					public int getSpanSize(int position) {
 						String text = mAdapter.getTag(position).text;
+						Log.d("DEBUG", "text = "+text);
+
 						mTextView.setText(text);
 						Rect bounds = new Rect();
 						TextPaint textPaint = mTextView.getPaint();
 						textPaint.getTextBounds(text, 0, text.length(), bounds);
 						int textViewWidth = bounds.width();
-						int itemSpan = (int)(textViewWidth/mDensity)+ 2/*leftPadding*/ + 2/*rightPadding*/+18 /*closeImagemWidth*/ + 18 /*margins*/  ;
+						Log.d("DEBUG", "textViewWidth = "+textViewWidth);
+
+						int itemSpan = (int)(textViewWidth/mDensity)+ 2/*leftPadding*/ + 2/*rightPadding*/+18 /*closeImagemWidth*/ + 18 /*margins*/  + (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT? 20 : 0);
+						Log.d("DEBUG", "itemSpan1 = "+itemSpan);
 
 						int spansPerItem = mMaxSpan/mGridSpans;
 
 						if (mGridSpans == 1) {
 							itemSpan =  itemSpan>mMaxSpan? mMaxSpan: itemSpan;
+							Log.d("DEBUG", "itemSpan2 = "+itemSpan);
 						} else {
 
 							if (mAdapter.getItemCount() == 1) {
@@ -147,6 +158,7 @@ public class TagView extends RecyclerView implements ITagview{
 								itemSpan = spansPerItem;
 							}
 						}
+						Log.d("DEBUG", "itemSpan3 = "+itemSpan);
 
 						return itemSpan;
 					}
